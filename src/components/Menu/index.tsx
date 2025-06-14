@@ -1,0 +1,27 @@
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
+import { Button } from "../Button";
+
+const Menu = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Błąd wylogowania:", error);
+    }
+  };
+
+  return (
+    <div className="border-l flex flex-col justify-between p-4 bg-blue-500">
+      <div>Awatar</div>
+      <Button
+        className="bg-neutral-50 hover:bg-neutral-300"
+        onClick={handleLogout}
+      >
+        <p className="text-blue-500">Logout</p>
+      </Button>
+    </div>
+  );
+};
+
+export default Menu;
