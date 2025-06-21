@@ -14,7 +14,7 @@ export const Tile: React.FC<TileProps> = ({
   return (
     <div
       {...rest}
-      className={`bg-white shadow-md rounded-lg p-4 border border-gray-200 ${
+      className={`bg-white shadow-md rounded-lg p-4 border border-gray-200 h-[150] w-[250] ${
         className ?? ""
       }`}
     >

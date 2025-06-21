@@ -12,10 +12,10 @@ const Menu = () => {
   };
 
   return (
-    <div className="border-l flex flex-col justify-between p-4 bg-blue-500">
-      <div>Awatar</div>
+    <div className="flex flex-col justify-between p-4 h-full">
+      <div></div>
       <Button
-        className="bg-neutral-50 hover:bg-neutral-300"
+        className="bg-neutral-0 hover:bg-neutral-300"
         onClick={handleLogout}
       >
         <p className="text-blue-500">Logout</p>
