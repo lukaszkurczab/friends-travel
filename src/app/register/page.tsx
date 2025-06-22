@@ -28,15 +28,14 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-16 items-center justify-center px-24 py-20 h-full">
-      <div className="border rounded-xl p-4 w-1/2 flex flex-col gap-2">
-        <h2 className="text-green-600 text-4xl font-bold">Create an account</h2>
-        <div className="text-black flex items-center">
+    <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 px-4 sm:px-8 md:px-12 lg:px-24 py-10 lg:py-20 w-full h-full">
+      <div className="border rounded-xl p-6 sm:p-8 w-full max-w-md flex flex-col gap-4 bg-white shadow-md">
+        <h2 className="text-green-600 text-3xl sm:text-4xl font-bold text-center">
+          Create an account
+        </h2>
+        <div className="text-black flex items-center justify-center gap-1">
           <h4>Already have an account?</h4>
-          <Link
-            className="px-1 text-blue-500 hover:text-blue-700"
-            href={"/login"}
-          >
+          <Link className="text-blue-500 hover:text-blue-700" href="/login">
             Log in
           </Link>
         </div>
@@ -51,7 +50,6 @@ const Register = () => {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
-
           <Input
             placeholder="Nazwisko"
             value={lastName}

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FitTravel",
-  description: "Your fitness journey starts here!",
+  title: "Maroko Terminy",
+  description: "Ustalmy termin wyjazdu do Maroka",
 };
 
 export default function RootLayout({

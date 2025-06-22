@@ -45,8 +45,8 @@ export async function getAllVotes(tripId: string) {
     const data = docSnap.data();
     const uid = data.UID;
 
-    let firstName = "Nieznany";
-    let lastName = "Użytkownik";
+    let firstName = "Użytkownik";
+    let lastName = "";
 
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
