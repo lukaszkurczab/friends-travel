@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "friends-travel-3ea70"
+  },
+  "targets": {
+    "friends-travel-3ea70": {
+      "hosting": {
+        "maroko-terminy": [
+          "maroko-terminy"
+        ]
+      }
+    }
   }
 }
