@@ -16,7 +16,11 @@ const Register = () => {
 
   const handleRegisterClick = async () => {
     if (password !== confirmPassword) {
-      alert("Hasła się nie zgadzają.");
+      alert("Hasła się nie zgadzają");
+      return;
+    }
+    if (firstName === "") {
+      alert("Dodaj przynajmniej imię");
       return;
     }
 
