@@ -26,16 +26,16 @@ const Dashboard = () => {
   }
 
   return (
-    <section className="flex w-full align-center h-full">
-      <div className="flex w-full justify-between gap-2 pl-4 items-center">
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          {showAllVotes ? <ResultCalendar /> : <VoteCalendar />}
-          <div className="flex items-center justify-between mt-4 gap-2">
-            Pokaż wszystkie głosy
-            <ToggleButton checked={showAllVotes} onChange={handleToggleVotes} />
-          </div>
-        </div>
+    <section className="flex flex-col md:flex-row w-full h-full">
+      <div className="md:order-2">
         <Menu />
+      </div>
+      <div className="flex flex-col items-center justify-center w-full h-full p-4 md:pl-4 md:order-1">
+        {showAllVotes ? <ResultCalendar /> : <VoteCalendar />}
+        <div className="flex items-center justify-between mt-4 gap-2">
+          Pokaż wszystkie głosy
+          <ToggleButton checked={showAllVotes} onChange={handleToggleVotes} />
+        </div>
       </div>
     </section>
   );

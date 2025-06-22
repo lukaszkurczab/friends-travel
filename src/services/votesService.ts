@@ -7,6 +7,7 @@ import {
   collection,
   query,
 } from "firebase/firestore";
+import { VoteEntry } from "../types";
 
 export async function updateUserVotes(
   tripId: string,
@@ -38,14 +39,35 @@ export async function getAllVotes(tripId: string) {
   const colRef = collection(db, "trips", tripId, "dateVotes");
   const snapshot = await getDocs(query(colRef));
 
-  const result: Record<string, string[]> = {};
+  const result: VoteEntry[] = [];
 
-  snapshot.forEach((docSnap) => {
+  for (const docSnap of snapshot.docs) {
     const data = docSnap.data();
-    if (data.UID && Array.isArray(data.votes)) {
-      result[data.UID] = data.votes;
+    const uid = data.UID;
+
+    let firstName = "Nieznany";
+    let lastName = "Użytkownik";
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        firstName = userData.firstName || firstName;
+        lastName = userData.lastName || lastName;
+      }
+    } catch (error) {
+      console.warn(`Nie udało się pobrać danych użytkownika ${uid}:`, error);
     }
-  });
+
+    if (uid && Array.isArray(data.votes)) {
+      result.push({
+        uid,
+        firstName,
+        lastName,
+        votes: data.votes,
+      });
+    }
+  }
 
   return result;
 }

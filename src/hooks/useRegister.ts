@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export const useRegister = () => {
   const router = useRouter();
@@ -11,13 +11,9 @@ export const useRegister = () => {
   const register = async (
     email: string,
     password: string,
-    termsAccepted: boolean
-  ): Promise<void> => {
-    if (!termsAccepted) {
-      alert("Musisz zaakceptować warunki umowy.");
-      return;
-    }
-
+    firstName: string,
+    lastName: string
+  ) => {
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -29,8 +25,15 @@ export const useRegister = () => {
 
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
+        firstName: firstName,
+        lastName: lastName,
         isLinked: false,
         createdAt: new Date(),
+      });
+
+      const tripRef = doc(db, "trips", "trip1");
+      await updateDoc(tripRef, {
+        members: arrayUnion(user.uid),
       });
 
       router.push("/login");

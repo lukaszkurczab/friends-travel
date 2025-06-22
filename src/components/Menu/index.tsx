@@ -12,10 +12,10 @@ const Menu = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between p-4 h-full">
+    <div className="flex justify-between w-full items-center p-4 md:flex-col md:justify-between md:h-full">
       <div></div>
       <Button
-        className="bg-neutral-0 hover:bg-neutral-300"
+        className="bg-neutral-0 hover:bg-neutral-300 ml-auto md:ml-0"
         onClick={handleLogout}
       >
         <p className="text-blue-500">Logout</p>

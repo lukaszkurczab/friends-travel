@@ -2,21 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "../../components/Button";
-import { Checkbox } from "../../components/Checkbox";
 import { Input } from "../../components/Input";
 import Link from "next/link";
 import { useRegister } from "../../hooks/useRegister";
 
 const Register = () => {
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [checked, setChecked] = useState(false);
   const { register, loading } = useRegister();
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setChecked(checked);
-  };
 
   const handleRegisterClick = async () => {
     if (password !== confirmPassword) {
@@ -24,7 +20,7 @@ const Register = () => {
       return;
     }
 
-    await register(email, password, checked);
+    await register(email, password, firstName, lastName);
   };
 
   return (
@@ -47,6 +43,17 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
+            placeholder="Imię"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+
+          <Input
+            placeholder="Nazwisko"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <Input
             placeholder="Password"
             value={password}
             type="password"
@@ -58,24 +65,10 @@ const Register = () => {
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <Checkbox checked={checked} onCheckedChange={handleCheckboxChange}>
-            Accept terms and conditions
-          </Checkbox>
           <Button onClick={handleRegisterClick} disabled={loading}>
             {loading ? "Creating..." : "Create account"}
           </Button>
         </div>
-        {/* <div className="border-t border-gray-300 my-4 relative">
-          <div className="flex justify-center absolute top-0 w-full -translate-y-1/2">
-            <span className="bg-white px-4 text-black text-sm">
-              Or register with
-            </span>
-          </div>
-        </div>
-        <Button className="bg-white border border-gray-300 flex items-center justify-center gap-3 text-black hover:text-white hover:border-transparent">
-          <Image src="/google.png" width={20} height={20} alt="Google" />
-          <span>Google</span>
-        </Button> */}
       </div>
     </div>
   );

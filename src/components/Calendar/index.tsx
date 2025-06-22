@@ -5,6 +5,8 @@ interface CalendarProps {
   tempMarkedDates?: Date[] | null;
   onDayPress: (date: Date) => void;
   onDayHover?: (date: Date) => void;
+  densityMap?: Record<string, number>;
+  onContextMenuDay?: (date: Date, event: React.MouseEvent) => void;
 }
 
 interface CalendarDay {
@@ -22,7 +24,7 @@ const generateCalendarMatrix = (
   year: number
 ): CalendarDay[][] => {
   const totalDays = daysInMonth(month, year);
-  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // poniedziałek jako 0
+  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const matrix: CalendarDay[][] = [];
   const prevMonth = month === 0 ? 11 : month - 1;
   const prevYear = month === 0 ? year - 1 : year;
@@ -72,8 +74,10 @@ const formatDate = (date: Date): string =>
 const Calendar: React.FC<CalendarProps> = ({
   markedDates,
   tempMarkedDates = [],
+  densityMap = null,
   onDayPress,
   onDayHover,
+  onContextMenuDay,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -160,6 +164,81 @@ const Calendar: React.FC<CalendarProps> = ({
                     ${isToday ? "border-2 border-blue-700" : ""}`}
                   onClick={() => handleDayClick(day)}
                   onMouseOver={() => handleDayHover(day)}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    onContextMenuDay?.(currentDate, e);
+                  }}
+                  data-date={currentDate.toDateString()}
+                >
+                  {day.day}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </>
+    );
+  };
+
+  const renderDaysWithDensityMap = () => {
+    const matrix = generateCalendarMatrix(currentMonth, currentYear);
+    const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+    return (
+      <>
+        <div className="flex justify-between text-blue-600 font-semibold text-lg mb-2">
+          {daysOfWeek.map((day) => (
+            <div
+              key={day}
+              className="w-12 h-12 flex items-center justify-center"
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+        {matrix.map((row, rowIdx) => (
+          <div key={rowIdx} className="flex justify-between">
+            {row.map((day, colIdx) => {
+              const currentDate = new Date(day.year, day.month, day.day);
+              const densityKey = currentDate.toDateString();
+
+              const isToday =
+                today.getFullYear() === day.year &&
+                today.getMonth() === day.month &&
+                today.getDate() === day.day;
+
+              const density = densityMap?.[densityKey] || 0;
+              const maxDensity = Math.max(
+                ...Object.values(densityMap || {}),
+                1
+              );
+              const intensity =
+                density > 0
+                  ? Math.min(0.2 + (density / maxDensity) * 0.6, 0.85)
+                  : 0;
+              const bgColor = intensity
+                ? `rgba(59, 130, 255, ${intensity})`
+                : "";
+
+              return (
+                <div
+                  key={colIdx}
+                  style={{ backgroundColor: bgColor }}
+                  className={`w-12 h-12 text-lg rounded-full flex items-center justify-center cursor-pointer transition-all
+                    ${day.isCurrentMonth ? "text-black" : "text-gray-400"}
+                    ${
+                      tempMarkedSet.has(formatDate(currentDate))
+                        ? "ring-2 ring-blue-300"
+                        : ""
+                    }
+                    ${isToday ? "border-2 border-blue-700" : ""}`}
+                  onClick={() => handleDayClick(day)}
+                  onMouseOver={() => handleDayHover(day)}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    onContextMenuDay?.(currentDate, e);
+                  }}
+                  data-date={currentDate.toDateString()}
                 >
                   {day.day}
                 </div>
@@ -261,8 +340,9 @@ const Calendar: React.FC<CalendarProps> = ({
           </button>
         )}
       </div>
-      <div className="w-[360px] h-[360px]">
-        {viewMode === "day" && renderDays()}
+      <div className="w-[80vw] max-w-[360px] aspect-square md:w-[360px]">
+        {viewMode === "day" && !densityMap && renderDays()}
+        {viewMode === "day" && densityMap && renderDaysWithDensityMap()}
         {viewMode === "month" && renderMonths()}
         {viewMode === "year" && renderYears()}
       </div>

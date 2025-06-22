@@ -87,12 +87,19 @@ const VoteCalendar = () => {
     }
   };
 
+  const handleRightClick = () => {
+    setTempSelectedDays([]);
+    setFirstSelectedDay(null);
+    setMode(null);
+  };
+
   return (
     <Calendar
       markedDates={selectedDays}
       tempMarkedDates={tempSelectedDays}
       onDayPress={handleDayPress}
       onDayHover={handleDayHover}
+      onContextMenuDay={() => handleRightClick()}
     />
   );
 };
