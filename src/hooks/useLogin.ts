@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth, db } from "../../firebase";
+import { auth, db } from "../firebase";
 import { setDoc } from "firebase/firestore";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  linkWithCredential,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 

@@ -1,16 +1,9 @@
-import React from "react";
-
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input: React.FC<InputProps> = ({
-  value,
-  onChange,
-  className,
-  ...rest
-}) => {
+export const Input = ({ value, onChange, className, ...rest }: InputProps) => {
   return (
     <input
       {...rest}

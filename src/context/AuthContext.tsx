@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { auth } from "../../firebase";
+import { auth } from "../firebase";
 
 type AuthContextType = {
   userEmail: string | null;

@@ -3,14 +3,13 @@
 import { useState } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
-import Image from "next/image";
 import Link from "next/link";
 import { useLogin } from "../../hooks/useLogin";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading, loginWithGoogle, googleLoading } = useLogin();
+  const { login, loading } = useLogin();
 
   const handleClick = async () => {
     await login(email, password);

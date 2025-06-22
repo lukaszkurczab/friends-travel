@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "../../components/Button";
 import { Checkbox } from "../../components/Checkbox";
 import { Input } from "../../components/Input";
-import Image from "next/image";
 import Link from "next/link";
 import { useRegister } from "../../hooks/useRegister";
 

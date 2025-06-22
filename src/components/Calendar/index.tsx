@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 interface CalendarProps {
   markedDates: Date[] | null;
+  tempMarkedDates?: Date[] | null;
   onDayPress: (date: Date) => void;
+  onDayHover?: (date: Date) => void;
 }
 
 interface CalendarDay {
@@ -67,7 +69,12 @@ const formatDate = (date: Date): string =>
     date.getMonth() + 1
   ).padStart(2, "0")}.${date.getFullYear()}`;
 
-const Calendar: React.FC<CalendarProps> = ({ markedDates, onDayPress }) => {
+const Calendar: React.FC<CalendarProps> = ({
+  markedDates,
+  tempMarkedDates = [],
+  onDayPress,
+  onDayHover,
+}) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [viewMode, setViewMode] = useState<"day" | "month" | "year">("day");
@@ -85,6 +92,12 @@ const Calendar: React.FC<CalendarProps> = ({ markedDates, onDayPress }) => {
 
   const handleDayClick = (day: CalendarDay) => {
     onDayPress(new Date(day.year, day.month, day.day));
+  };
+
+  const handleDayHover = (day: CalendarDay) => {
+    if (onDayHover) {
+      onDayHover(new Date(day.year, day.month, day.day));
+    }
   };
 
   const changeMonth = (dir: "prev" | "next") => {
@@ -106,6 +119,7 @@ const Calendar: React.FC<CalendarProps> = ({ markedDates, onDayPress }) => {
   };
 
   const markedSet = new Set(markedDates?.map(formatDate));
+  const tempMarkedSet = new Set(tempMarkedDates?.map(formatDate));
 
   const renderDays = () => {
     const matrix = generateCalendarMatrix(currentMonth, currentYear);
@@ -141,9 +155,11 @@ const Calendar: React.FC<CalendarProps> = ({ markedDates, onDayPress }) => {
                   key={colIdx}
                   className={`w-12 h-12 text-lg rounded-full flex items-center justify-center cursor-pointer transition-all
                     ${day.isCurrentMonth ? "text-black" : "text-gray-400"}
+                    ${tempMarkedSet.has(dateStr) ? "bg-blue-100" : ""}
                     ${isMarked ? "bg-blue-500 text-white" : ""}
                     ${isToday ? "border-2 border-blue-700" : ""}`}
                   onClick={() => handleDayClick(day)}
+                  onMouseOver={() => handleDayHover(day)}
                 >
                   {day.day}
                 </div>
